@@ -62,4 +62,7 @@ export const TabStyle = styled.div`
     right: 0px;
     bottom: 0px;
   }
+  .ant-input {
+    width: 240px;
+  }
 `;

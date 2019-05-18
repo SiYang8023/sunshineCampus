@@ -15,7 +15,9 @@ import MainPage from 'containers/MainPage';
 import LoginRegisterPage from 'containers/LoginRegisterPage';
 import InfoPage from 'containers/InfoPage';
 import ReleaseSale from 'containers/ReleaseSale';
+import ReleaseBuy from 'containers/ReleaseBuy';
 import GoodsPlay from 'containers/GoodsPlay';
+import Management from 'containers/Management';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
@@ -44,8 +46,9 @@ export default function App() {
         <Route path="/register" component={LoginRegisterPage} />
         <Route path="/info" component={InfoPage} />
         <Route path="/release_sale" component={ReleaseSale} />
-        <Route path="/release_buy" component={ReleaseSale} />
+        <Route path="/release_buy" component={ReleaseBuy} />
         <Route path="/sale/:id" component={GoodsPlay} />
+        <Route path="/management" component={Management} />
         {/* <Route path="/features" component={FeaturePage} /> */}
         <Route path="" component={NotFoundPage} />
       </Switch>

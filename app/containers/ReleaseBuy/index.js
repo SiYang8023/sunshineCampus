@@ -19,7 +19,7 @@ import {
   Select,
 } from 'antd';
 import MainPage from 'containers/MainPage';
-import { ReleaseSaleStyle } from './style';
+import { ReleaseBuyStyle } from './style';
 
 const Option = Select.Option;
 
@@ -42,16 +42,7 @@ function beforeUpload(file) {
 }
 
 /* eslint-disable react/prefer-stateless-function */
-class ReleaseSale extends React.Component {
-  state = {
-    loading: false,
-    fileList: [],
-  };
-
-  componentDidMount() {
-    this.node.scrollIntoView();
-  };
-
+class ReleaseBuy extends React.Component {
   // 提交表单
   handleSubmit = e => {
     e.preventDefault();
@@ -62,34 +53,9 @@ class ReleaseSale extends React.Component {
     });
   };
 
-  handleChange = info => {
-    if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
-          loading: false,
-        }),
-      );
-    }
-  };
-
-  handleUpload = info => {
-    let fileList = [...info.fileList];
-    fileList = fileList.slice(-4);
-    fileList = fileList.map(file => {
-      if (file.response) {
-        file.url = file.response.url;
-      }
-      return file;
-    });
-
-    this.setState({ fileList });
-  };
+  componentDidMount() {
+    this.node.scrollIntoView();
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -103,26 +69,6 @@ class ReleaseSale extends React.Component {
         sm: { span: 16 },
       },
     };
-    // 上传封面
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">上传</div>
-      </div>
-    );
-    const imageUrl = this.state.imageUrl;
-
-    // 上传相册
-    const props = {
-      name: 'file',
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      headers: {
-        authorization: 'authorization-text',
-      },
-      listType: 'picture',
-      onChange: this.handleUpload,
-    };
-
     const selectList = [
       { item: '代步工具', key: 'tool' },
       { item: '手机', key: 'phone' },
@@ -135,11 +81,11 @@ class ReleaseSale extends React.Component {
       { item: '其他', key: 'other' },
     ];
     return (
-      <div ref={node => this.node = node}>
+      <div ref={node => (this.node = node)}>
         <MainPage />
-        <ReleaseSaleStyle>
+        <ReleaseBuyStyle>
           <Card
-            title="发布二手信息"
+            title="发布求购信息"
             style={{ width: 1000, margin: '85px auto' }}
           >
             <div className="ibox-title">
@@ -175,30 +121,6 @@ class ReleaseSale extends React.Component {
                       },
                     ],
                   })(<Input placeholder="请输入详情" />)}
-                </Form.Item>
-                <Form.Item label="封面">
-                  <Upload
-                    name="avatar"
-                    listType="picture-card"
-                    className="avatar-uploader"
-                    showUploadList={false}
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    beforeUpload={beforeUpload}
-                    onChange={this.handleChange}
-                  >
-                    {imageUrl ? (
-                      <img src={imageUrl} alt="avatar" />
-                    ) : (
-                      uploadButton
-                    )}
-                  </Upload>
-                </Form.Item>
-                <Form.Item label="相册">
-                  <Upload {...props} fileList={this.state.fileList}>
-                    <Button>
-                      <Icon type="upload" /> 点击上传图片
-                    </Button>
-                  </Upload>
                 </Form.Item>
                 <Form.Item label="价格">
                   {getFieldDecorator('price', {
@@ -248,11 +170,11 @@ class ReleaseSale extends React.Component {
               </Form>
             </div>
           </Card>
-        </ReleaseSaleStyle>
+        </ReleaseBuyStyle>
       </div>
     );
   }
 }
 
-const ReleaseSaleForm = Form.create({ name: 'normal_login' })(ReleaseSale);
-export default ReleaseSaleForm;
+const ReleaseBuyForm = Form.create({ name: 'normal_login' })(ReleaseBuy);
+export default ReleaseBuyForm;

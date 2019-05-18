@@ -3,7 +3,7 @@ import _ from 'lodash';
 import Foot from 'components/Foot';
 import pic from 'images/pic.png';
 import 'antd/lib/modal/style/css';
-import { Tabs, Button, Modal } from 'antd';
+import { Tabs, Button, Modal, Input } from 'antd';
 import MainPage from '../MainPage';
 import { WrapContent, TabStyle } from './style';
 
@@ -27,6 +27,13 @@ const confirm = Modal.confirm;
 
 /* eslint-disable react/prefer-stateless-function */
 export default class InfoPage extends React.Component {
+  state = {
+    edit: false,
+    nameValue:'ta很懒，还都没留下签名喔~',
+    phoneValue: '343443454',
+    emailValue:'4534554656656',
+  };
+
   // 回到页面顶部
   componentDidMount() {
     this.node.scrollIntoView();
@@ -56,7 +63,30 @@ export default class InfoPage extends React.Component {
     this.props.history.push('/release_buy');
   };
 
+  onEdit = () => {
+    this.setState({ edit: true });
+  }
+
+  onSure = () => {
+    const { nameValue, phoneValue, emailValue } = this.state;
+    this.setState({ edit: false });
+    console.log(nameValue);
+  }
+
+  nameValue = e => {
+    this.setState({ nameValue: e.target.value });
+  }
+
+  emailValue = e => {
+    this.setState({ emailValue: e.target.value });
+  }
+
+  phoneValue = e => {
+    this.setState({ phoneValue: e.target.value });
+  }
+
   render() {
+    const { edit, nameValue, phoneValue, emailValue } = this.state;
     const publishList = [
       { img: pic, title: '一辆二手自行车', info: '一辆二手自行车', key: 1 },
       { img: pic, title: '一辆二手自行车', info: '一辆二手自行车', key: 2 },
@@ -92,20 +122,24 @@ export default class InfoPage extends React.Component {
                 <span>admin</span>
               </div>
               <div className="title">基本信息
-                  <Button type="primary">
-                    删除
-                  </Button></div>
+                {this.state.edit ? 
+                  <Button type="primary" onClick={this.onSure}>
+                   确定
+                  </Button>: <Button type="primary" onClick={this.onEdit}>
+                   编辑资料
+                  </Button>}
+              </div>
               <div className="item">
                 <span className="info">签名</span>
-                <span>ta很懒，还都没留下签名喔~</span>
+                <span>{this.state.edit ? <Input onChange={this.nameValue} value={nameValue} /> :nameValue}</span>
               </div>
               <div className="item">
                 <span className="info">手机</span>
-                <span>18234568033</span>
+                <span>{this.state.edit ? <Input onChange={this.phoneValue} value={phoneValue} />:phoneValue}</span>
               </div>
               <div className="item">
                 <span className="info">email</span>
-                <span>1365335467@qq.com</span>
+                <span>{this.state.edit ? <Input onChange={this.emailValue} value={emailValue} />:emailValue}</span>
               </div>
             </TabPane>
             <TabPane tab="我发布的商品" key="2">
