@@ -7,16 +7,14 @@ import 'antd/lib/button/style/css';
 import 'antd/lib/checkbox/style/css';
 import 'antd/lib/auto-complete/style/css';
 import { Form, Icon, Input, Button, Checkbox, AutoComplete } from 'antd';
+import axios from 'axios';
 import regbg from 'images/reg_bg.jpg';
 import { LoginRegister } from './style';
 
-function onSelect(value) {
-  console.log('onSelect', value);
-}
 /* eslint-disable react/prefer-stateless-function */
 class LoginRegisterPage extends React.Component {
   state = {
-    dataSource: [],
+    dataSource: ['陕西科技大学镐京学院', '陕西科技大学'],
     current: this.props.location.state,
     validator: false,
     ...this.initState(),
@@ -26,11 +24,29 @@ class LoginRegisterPage extends React.Component {
     this.node.scrollIntoView();
   }
 
-  handleSearch = value => {
-    this.setState({
-      dataSource: !value ? [] : [value, value + value, value + value + value],
-    });
+  onSelect = value => {
+    console.log('onSelect', value);
   };
+
+  onInputChange = value => {
+    const { dataSource } = this.state;
+    if (_.indexOf(dataSource, value) === -1) {
+      this.setState({
+        dataSource: ['未找到符合结果'],
+      });
+    } else {
+      this.setState({
+        dataSource: ['陕西科技大学镐京学院', '陕西科技大学'],
+      });
+    }
+    // console.log('value', value);
+    // console.log(dataSource);
+  };
+  // handleSearch = value => {
+  //   this.setState({
+  //     dataSource: !value ? [] : [value, value + value, value + value + value],
+  //   });
+  // };
 
   // 随机验证码
   initState() {
@@ -160,8 +176,9 @@ class LoginRegisterPage extends React.Component {
               })(
                 <AutoComplete
                   dataSource={this.state.dataSource}
-                  onSelect={onSelect}
-                  onSearch={this.handleSearch}
+                  // onSelect={this.onSelect}
+                  onChange={this.onInputChange}
+                  // onSearch={this.handleSearch}
                   placeholder="请输入学校"
                 />,
               )}
@@ -239,17 +256,11 @@ class LoginRegisterPage extends React.Component {
                   {current === 'login' ? (
                     <Fragment>
                       <Checkbox>记住密码</Checkbox>
-                      <Link to={{ pathname: '/', state: 'forget' }}>
-                        找回密码
-                      </Link>
                       <a onClick={this.handleRegister}>注册账号</a>
                     </Fragment>
                   ) : (
                     <Fragment>
                       <a onClick={this.handleLogin}>登录</a>
-                      <Link to={{ pathname: '/', state: 'forget' }}>
-                        找回密码
-                      </Link>
                     </Fragment>
                   )}
                 </div>,

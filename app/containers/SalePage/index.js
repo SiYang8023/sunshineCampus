@@ -9,6 +9,11 @@ import { WrapContent } from './style';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class SalePage extends React.Component {
+
+  componentWillMount() {
+    console.log('this', this.props);
+  };
+
   // 回到页面顶部
   componentDidMount() {
     this.node.scrollIntoView();
